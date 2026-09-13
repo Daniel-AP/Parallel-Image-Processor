@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd "$(dirname "$0")" || exit 1
+mkdir -p build || exit 1
+erlc -o build src/*.erl || exit 1
+erl -noshell -pa build -eval 'main:main(init:get_plain_arguments()).' -extra "$@"
