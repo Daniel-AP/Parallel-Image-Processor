@@ -1,7 +1,21 @@
 #lang swindle
 
-(provide kernel-radius
-    gaussian-kernel)
+(require "convolution.scm")
+
+(provide apply-gaussian)
+
+;; Domain: A Gaussian request and an image
+;; Codomain: A processed region image
+
+(define apply-gaussian
+    (lambda (request image)
+        (convolve-region
+            image
+            (gaussian-kernel
+                (cadr (cadddr request))
+                (caddr (cadddr request)))
+            (car (cddddr request))
+            (cadr (cddddr request)))))
 
 ;; Domain: An odd kernel size of at least 3
 ;; Codomain: A nonnegative integer
@@ -34,7 +48,7 @@
                 (build-kernel-rows
                     (- (kernel-radius kernel-size))
                     (kernel-radius kernel-size)
-                    sigma))))))
+                    sigma)))))
 
 ;; Domain: Vertical offset, radius and sigma
 ;; Codomain: Kernel rows
