@@ -39,6 +39,8 @@ create_worker_paths(Id) ->
             "parallel_image_processor_",
             integer_to_list(Id),
             "_",
+            integer_to_list(erlang:system_time(microsecond)),
+            "_",
             integer_to_list(erlang:unique_integer([positive]))
         ])
     ),

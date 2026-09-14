@@ -19,19 +19,21 @@
 
 (define write-region
     (lambda (path image)
-        (display-to-file
-            (string-append
-                "P3\n"
-                (number->string (car image))
-                " "
-                (number->string (cadr image))
-                "\n255\n"
-                (string-join
-                    (map pixel-to-text (apply append (caddr image)))
-                    "\n")
-                "\n")
+        (call-with-output-file
             path
-            #:exists 'replace)))
+            (lambda (output)
+                (display
+                    (string-append
+                        "P3\n"
+                        (number->string (car image))
+                        " "
+                        (number->string (cadr image))
+                        "\n255\n"
+                        (string-join
+                            (map pixel-to-text (apply append (caddr image)))
+                            "\n")
+                        "\n")
+                    output)))))
 
 ;; Domain: Valid PPM tokens
 ;; Codomain: An image
@@ -107,8 +109,8 @@
 (define pixel-to-text
     (lambda (pixel)
         (string-append
-            (number->string (car pixel))
+            (number->string (inexact->exact (car pixel)))
             " "
-            (number->string (cadr pixel))
+            (number->string (inexact->exact (cadr pixel)))
             " "
-            (number->string (caddr pixel)))))
+            (number->string (inexact->exact (caddr pixel))))))

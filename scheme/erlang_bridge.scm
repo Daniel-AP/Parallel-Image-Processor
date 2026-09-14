@@ -50,7 +50,9 @@
 
 (define write-success
     (lambda (status-path)
-        (display-to-file
-            "ok"
+        (call-with-output-file
             status-path
-            #:exists 'replace)))
+            (lambda (output)
+                (display
+                    "ok"
+                    output)))))
