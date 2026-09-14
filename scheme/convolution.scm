@@ -95,14 +95,13 @@
                         column
                         dy
                         (- radius)
-                        radius
                         accumulator))))))
 
 ;; Domain: An image, a kernel row and an RGB accumulator
 ;; Codomain: A weighted RGB sum
 
 (define convolve-kernel-row
-    (lambda (image kernel-row row column dy dx radius accumulator)
+    (lambda (image kernel-row row column dy dx accumulator)
         (cond
             ((null? kernel-row) accumulator)
             (else
@@ -113,7 +112,6 @@
                     column
                     dy
                     (+ dx 1)
-                    radius
                     (add-pixels
                         accumulator
                         (scale-pixel
