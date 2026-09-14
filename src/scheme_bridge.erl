@@ -44,7 +44,8 @@ create_worker_paths(Id) ->
     ),
     case file:make_dir(Directory) of
         ok ->
-            { ok,
+            {
+                ok,
                 #{
                     directory => Directory,
                     input => filename:join(Directory, "scheme_worker_input"),
@@ -142,7 +143,8 @@ read_result(OutputPath, Region) ->
             } = Region,
             case { Width, Height } =:= { Right - Left + 1, Bottom - Top + 1 } of
                 true ->
-                    { ok,
+                    {
+                        ok,
                         #{
                             id => Id,
                             top_left => { Left, Top },

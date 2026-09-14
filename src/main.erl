@@ -29,7 +29,8 @@ parse_arguments([InputPath, OutputPath, ProcessText]) ->
             case InputPath =:= OutputPath of
                 true -> { error, "Input and output paths must be different" };
                 false ->
-                    { ok,
+                    {
+                        ok,
                         #{
                             input_path => InputPath,
                             output_path => OutputPath,
@@ -49,7 +50,8 @@ parse_arguments([InputPath, OutputPath, ProcessText, FilterText]) ->
                     case InputPath =:= OutputPath of
                         true -> { error, "Input and output paths must be different" };
                         false ->
-                            { ok,
+                            {
+                                ok,
                                 #{
                                     input_path => InputPath,
                                     output_path => OutputPath,
@@ -76,7 +78,8 @@ parse_arguments([InputPath, OutputPath, ProcessText, FilterText, KernelText, Sig
                                     case InputPath =:= OutputPath of
                                         true -> { error, "Input and output paths must be different" };
                                         false ->
-                                            { ok,
+                                            {
+                                                ok,
                                                 #{
                                                     input_path => InputPath,
                                                     output_path => OutputPath,
