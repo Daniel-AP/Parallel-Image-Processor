@@ -79,16 +79,15 @@
 
 (define grayscale-pixel
     (lambda (pixel)
-        (list
-            (round
-                (+ (* (car pixel) 0.299)
-                   (* (cadr pixel) 0.587)
-                   (* (caddr pixel) 0.114)))
-            (round
-                (+ (* (car pixel) 0.299)
-                   (* (cadr pixel) 0.587)
-                   (* (caddr pixel) 0.114)))
+        (grayscale-components
             (round
                 (+ (* (car pixel) 0.299)
                    (* (cadr pixel) 0.587)
                    (* (caddr pixel) 0.114))))))
+
+;; Domain: A grayscale component
+;; Codomain: A grayscale RGB pixel
+
+(define grayscale-components
+    (lambda (component)
+        (list component component component)))
