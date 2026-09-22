@@ -1,0 +1,161 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstset{
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    columns=fullflexible,
+    frame=single,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE\textbf{Manual de ejecución}}\\
+    \vspace{0.3cm}
+    {\large Procesamiento paralelo de imágenes con Scheme y Erlang}
+\end{center}
+
+\section*{Requisitos}
+
+El proyecto requiere las siguientes herramientas:
+
+\begin{itemize}
+    \item Erlang Base con los comandos \texttt{erl} y \texttt{erlc}
+    \item Racket
+    \item Full Swindle
+\end{itemize}
+
+Erlang Base y Racket se instalan con:
+
+\begin{lstlisting}
+sudo apt update
+sudo apt install erlang-base racket
+\end{lstlisting}
+
+Full Swindle se instala con:
+
+\begin{lstlisting}
+raco pkg install swindle
+\end{lstlisting}
+
+\section*{Ubicación del proyecto}
+
+La ejecución se realiza desde la carpeta principal del proyecto:
+
+\begin{lstlisting}
+cd <ruta-del-proyecto>
+\end{lstlisting}
+
+Esta carpeta contiene el archivo \texttt{image\_processor} y las carpetas
+\texttt{src}, \texttt{scheme} y \texttt{samples}.
+
+\section*{Formato de la imagen}
+
+La imagen de entrada debe cumplir las siguientes condiciones:
+
+\begin{itemize}
+    \item Formato PPM P3
+    \item Valor máximo de color igual a 255
+    \item Componentes RGB entre 0 y 255
+    \item Sin comentarios
+\end{itemize}
+
+Las rutas de entrada y salida deben ser diferentes.
+
+\section*{Sintaxis de ejecución}
+
+El archivo \texttt{image\_processor} compila el código Erlang antes de cada
+ejecución.
+
+\subsection*{Difuminado gaussiano predeterminado}
+
+\begin{lstlisting}
+./image_processor <imagen-de-entrada> <imagen-de-salida> <cantidad-de-procesos>
+\end{lstlisting}
+
+Esta forma utiliza un kernel de tamaño 3 y un sigma de 0.8493.
+
+\begin{itemize}
+    \item \verb|<imagen-de-entrada>| es la ruta de la imagen PPM P3
+    \item \verb|<imagen-de-salida>| es la ruta donde se escribe el resultado
+    \item \verb|<cantidad-de-procesos>| es un entero positivo
+\end{itemize}
+
+\subsection*{Difuminado gaussiano personalizado}
+
+\begin{lstlisting}
+./image_processor <imagen-de-entrada> <imagen-de-salida> \
+    <cantidad-de-procesos> gaussian <tamano-del-kernel> <sigma>
+\end{lstlisting}
+
+\begin{itemize}
+    \item \verb|<tamano-del-kernel>| es un número impar mayor o igual que 3
+    \item \verb|<sigma>| es un número positivo
+\end{itemize}
+
+\subsection*{Escala de grises}
+
+\begin{lstlisting}
+./image_processor <imagen-de-entrada> <imagen-de-salida> \
+    <cantidad-de-procesos> grayscale
+\end{lstlisting}
+
+Los nombres \texttt{gaussian} y \texttt{grayscale} se escriben en minúscula.
+La cantidad de procesos no puede superar la altura de la imagen.
+
+\section*{Cantidad de procesos}
+
+La cantidad de procesos se cambia en el argumento
+\verb|<cantidad-de-procesos>|.
+
+Ejemplos con 1, 2, 4 y 8 procesos:
+
+\begin{lstlisting}
+./image_processor samples/sample_1.ppm sample_1_process_1.ppm 1
+./image_processor samples/sample_1.ppm sample_1_process_2.ppm 2
+./image_processor samples/sample_1.ppm sample_1_process_4.ppm 4
+./image_processor samples/sample_1.ppm sample_1_process_8.ppm 8
+\end{lstlisting}
+
+\section*{Ejemplos}
+
+Difuminado gaussiano predeterminado con cuatro procesos:
+
+\begin{lstlisting}
+./image_processor samples/sample_1.ppm sample_1_gaussian.ppm 4
+\end{lstlisting}
+
+Difuminado gaussiano con un kernel de tamaño 5 y un sigma de 0.75:
+
+\begin{lstlisting}
+./image_processor samples/sample_1.ppm sample_1_gaussian_5.ppm \
+    4 gaussian 5 0.75
+\end{lstlisting}
+
+Escala de grises con cuatro procesos:
+
+\begin{lstlisting}
+./image_processor samples/sample_1.ppm sample_1_grayscale.ppm 4 grayscale
+\end{lstlisting}
+
+\section*{Resultado}
+
+Por ejemplo, una ejecución correcta puede mostrar:
+
+\begin{lstlisting}
+Completed in 2.379137 seconds.
+\end{lstlisting}
+
+La imagen procesada queda en la ruta indicada por
+\verb|<imagen-de-salida>|.
+
+\end{document}
